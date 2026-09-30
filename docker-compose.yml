@@ -1,0 +1,46 @@
+name: formflow
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: formflow
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-formflow}
+      POSTGRES_DB: formflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U formflow -d formflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  web:
+    image: formflow:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://formflow:${POSTGRES_PASSWORD:-formflow}@postgres:5432/formflow?schema=public
+      AUTH_SECRET: ${AUTH_SECRET:?Set AUTH_SECRET in .env}
+      APP_URL: ${APP_URL:-http://localhost:3000}
+    command: ["sh", "-c", "pnpm --filter @formflow/db db:deploy && pnpm --filter @formflow/web start"]
+    ports:
+      - "${APP_BIND_ADDRESS:-127.0.0.1}:${APP_PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:3000/api/health').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+volumes:
+  postgres_data:

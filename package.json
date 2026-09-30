@@ -1,0 +1,29 @@
+{
+  "name": "formflow",
+  "private": true,
+  "scripts": {
+    "dev": "dotenv -e .env -- pnpm --filter @formflow/db build && dotenv -e .env -- turbo run dev --filter=@formflow/web",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "turbo run clean",
+    "db:generate": "pnpm --filter @formflow/db db:generate",
+    "db:migrate": "pnpm --filter @formflow/db db:migrate",
+    "db:deploy": "pnpm --filter @formflow/db db:deploy",
+    "db:studio": "pnpm --filter @formflow/db db:studio"
+  },
+  "devDependencies": {
+    "dotenv-cli": "8.0.0",
+    "prettier": "3.5.3",
+    "turbo": "2.5.0",
+    "typescript": "5.8.3"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22.13.0 <23",
+    "pnpm": ">=9.15.9 <10"
+  },
+  "type": "module"
+}

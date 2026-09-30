@@ -1,0 +1,26 @@
+{
+  "name": "@formflow/validation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint src --max-warnings 0",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "3.24.2"
+  },
+  "devDependencies": {
+    "@formflow/eslint-config": "workspace:*",
+    "@formflow/typescript-config": "workspace:*",
+    "eslint": "9.24.0",
+    "typescript": "5.8.3"
+  }
+}

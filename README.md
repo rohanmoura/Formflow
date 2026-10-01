@@ -29,9 +29,16 @@ FormFlow uses Clerk for all sign-in and sign-up. Copy its publishable and secret
 
 For local development and the temporary interview demo, use the **Clerk Development instance** keys (`pk_test_…` and `sk_test_…`). This AWS deployment is deliberately short-lived; it is not a permanent production deployment. Development instances have a relaxed security posture, a 100-user cap, and separate non-transferable test data, so use demo accounts and synthetic form responses only. The Clerk dashboard and Google consent flow may identify the app as a development app. Do not switch to production keys for this workflow.
 
-The EC2 bootstrap intentionally leaves both Clerk values blank. After the instance is healthy, connect with the printed AWS Systems Manager command and securely edit `/opt/formflow/.env.production` on the instance: replace the blank `CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` values with the keys from the **Development** instance. Do not paste the secret key into Git, a workflow, or a public issue. Save the file, run `sudo chmod 600 /opt/formflow/.env.production`, then restart the web container:
+The EC2 bootstrap intentionally leaves both Clerk values blank. After the instance is healthy, connect with the printed AWS Systems Manager command and securely edit `/opt/formflow/.env.production` on the instance. Use these commands in the SSM session:
 
 ```bash
+sudo vi /opt/formflow/.env.production
+```
+
+In `vi`, replace the blank `CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` values with the keys from the **Development** instance. Press `i` to edit, then `Esc`, type `:wq`, and press Enter to save. Do not paste the secret key into Git, a workflow, or a public issue. Then run:
+
+```bash
+sudo chmod 600 /opt/formflow/.env.production
 cd /opt/formflow
 sudo docker compose --profile tls --env-file .env.production up -d --force-recreate web
 ```

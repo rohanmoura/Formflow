@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -6,6 +7,13 @@ export const metadata: Metadata = {
   description: "Create a form, share one link, and keep every response organized."
 };
 
+export const viewport: Viewport = { themeColor: "#f7f7f5" };
+
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+  const content = <html lang="en"><body>{children}</body></html>;
+  return process.env.CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY
+    ? <ClerkProvider publishableKey={process.env.CLERK_PUBLISHABLE_KEY}>{content}</ClerkProvider>
+    : content;
 }

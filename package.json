@@ -2,7 +2,7 @@
   "name": "formflow",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e .env -- pnpm --filter @formflow/db build && dotenv -e .env -- turbo run dev --filter=@formflow/web",
+    "dev": "dotenv -e .env -- turbo run dev --filter=@formflow/web",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
@@ -12,9 +12,12 @@
     "db:generate": "pnpm --filter @formflow/db db:generate",
     "db:migrate": "pnpm --filter @formflow/db db:migrate",
     "db:deploy": "pnpm --filter @formflow/db db:deploy",
-    "db:studio": "pnpm --filter @formflow/db db:studio"
+    "db:studio": "pnpm --filter @formflow/db db:studio",
+    "test:e2e": "dotenv -e .env -- playwright test"
   },
   "devDependencies": {
+    "@clerk/testing": "^2.2.41",
+    "@playwright/test": "^1.63.0",
     "dotenv-cli": "8.0.0",
     "prettier": "3.5.3",
     "turbo": "2.5.0",

@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "dotenv -e ../../.env -- next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --max-warnings 0",
@@ -12,22 +12,24 @@
     "clean": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true})\""
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.36.5",
     "@formflow/db": "workspace:^",
     "@formflow/validation": "workspace:*",
     "next": "15.3.3",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "19.0.3",
+    "react-dom": "19.0.3",
     "zod": "3.24.2"
   },
   "devDependencies": {
     "@formflow/eslint-config": "workspace:*",
     "@formflow/typescript-config": "workspace:*",
+    "@tailwindcss/postcss": "4.1.4",
     "@types/node": "22.14.0",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
+    "dotenv-cli": "8.0.0",
     "eslint": "9.24.0",
     "tailwindcss": "4.1.4",
-    "@tailwindcss/postcss": "4.1.4",
     "typescript": "5.8.3"
   }
 }

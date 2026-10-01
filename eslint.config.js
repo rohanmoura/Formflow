@@ -1,3 +1,4 @@
-import { baseConfig } from "@formflow/eslint-config/base";
+import { globalIgnores } from "eslint/config";
+import { nextConfig } from "@formflow/eslint-config/next";
 
-export default baseConfig;
+export default [...nextConfig, globalIgnores(["**/.next/**", "**/dist/**", "**/node_modules/**", "**/next-env.d.ts"])];

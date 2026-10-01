@@ -11,22 +11,10 @@ model User {
   id           String    @id @default(cuid())
   name         String?
   email        String    @unique
-  passwordHash String
+  clerkId      String?   @unique
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   forms        Form[]
-  sessions     Session[]
-}
-
-model Session {
-  id        String   @id @default(cuid())
-  tokenHash String   @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId, expiresAt])
 }
 
 model Form {
@@ -36,6 +24,7 @@ model Form {
   slug        String      @unique
   status      FormStatus  @default(DRAFT)
   publishedAt DateTime?
+  limitOneResponsePerEmail Boolean @default(false)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   ownerId     String
@@ -72,9 +61,19 @@ model Submission {
   form        Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
   submittedAt DateTime @default(now())
   respondent  Json?
+  respondentEmail String?
   answers     Answer[]
 
   @@index([formId, submittedAt])
+  @@index([formId, respondentEmail])
+}
+
+model SubmissionRateLimit {
+  key             String   @id
+  windowStartedAt DateTime @default(now())
+  count           Int      @default(0)
+
+  @@index([windowStartedAt])
 }
 
 model Answer {
